@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "ngbff"
+		},
+		{
+			"path": "identityprovider"
 		}
 	],
 	"settings": {}

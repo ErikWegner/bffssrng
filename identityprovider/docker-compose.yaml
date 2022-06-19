@@ -1,0 +1,45 @@
+version: '3'
+
+# See https://ewus.de/en/hint/traefik-container-router for details on routing
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=keycloak
+    labels:
+      - "traefik.enable=false"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  identityprovider:
+    image: quay.io/keycloak/keycloak:18.0.1
+    command: [ "start-dev" ]
+    depends_on:
+      - db
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_PROXY=edge
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=db
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=keycloak
+    labels:
+      - traefik.http.routers.identityprovider.rule=Host(`identityprovider.localhost`)
+    networks:
+      - default
+      - traefik
+    ports:
+      - "8443:8443"
+
+networks:
+  traefik:
+    external: true
+
+volumes:
+  dbdata: {}
