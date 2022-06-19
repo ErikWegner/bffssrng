@@ -11,7 +11,7 @@ export async function init(app: Application): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     client_id: process.env.AUTH_CLIENTID!,
     client_secret: process.env.AUTH_CLIENTSECRET,
-    redirect_uris: ['http://localhost:3000/bff/auth/callback'],
+    redirect_uris: ['http://localhost:4200/bff/auth/callback'],
     post_logout_redirect_uris: ['http://localhost:3000/bff/logout/callback'],
     token_endpoint_auth_method: 'client_secret_post',
   });
@@ -54,7 +54,9 @@ export async function init(app: Application): Promise<void> {
 
   // Setup routes
   app.get('/bff/auth', (req, res, next) => {
-    passport.authenticate('oidc', { scope: 'openid' })(req, res, next);
+    passport.authenticate('oidc', {
+      scope: 'openid',
+    })(req, res, next);
   });
   app.get('/bff/auth/callback', (req, res, next) => {
     passport.authenticate('oidc', {

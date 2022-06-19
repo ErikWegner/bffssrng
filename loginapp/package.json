@@ -37,6 +37,7 @@
     "@types/express": "^4.17.0",
     "@types/jasmine": "~4.0.0",
     "@types/node": "^14.15.0",
+    "http-proxy-middleware": "^2.0.6",
     "jasmine-core": "~4.1.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
