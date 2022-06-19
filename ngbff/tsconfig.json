@@ -21,11 +21,15 @@
     "strictPropertyInitialization":false,
     "alwaysStrict": true,
     "outDir": "dist",
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": [
+      "@types",
+      "node_modules/@types"
+    ],
     "resolveJsonModule": true,
     "baseUrl": "."
-
   },
-  "include": ["server/**/*.ts"],
+  "include": [
+    "server/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

@@ -43,9 +43,9 @@ export default class ExpressServer {
   }
 
   async router(routes: (app: Application) => void): Promise<ExpressServer> {
+    await init(app);
     routes(app);
     app.use(errorHandler);
-    await init(app);
     return this;
   }
 
