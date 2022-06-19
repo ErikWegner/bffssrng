@@ -53,6 +53,15 @@ paths:
         404:
           description: Example not found
           content: {}
+  /me:
+    get:
+      responses:
+        200:
+          description: Return user data
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
   /spec:
     get:
       tags:
