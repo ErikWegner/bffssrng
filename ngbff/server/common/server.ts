@@ -8,6 +8,7 @@ import l from './logger';
 
 import errorHandler from '../api/middlewares/error.handler';
 import * as OpenApiValidator from 'express-openapi-validator';
+import { init } from './auth';
 
 const app = express();
 
@@ -36,14 +37,15 @@ export default class ExpressServer {
       OpenApiValidator.middleware({
         apiSpec,
         validateResponses,
-        ignorePaths: /.*\/spec(\/|$)/,
+        ignorePaths: /.*\/spec(\/|$)|^\/bff\//,
       })
     );
   }
 
-  router(routes: (app: Application) => void): ExpressServer {
+  async router(routes: (app: Application) => void): Promise<ExpressServer> {
     routes(app);
     app.use(errorHandler);
+    await init(app);
     return this;
   }
 

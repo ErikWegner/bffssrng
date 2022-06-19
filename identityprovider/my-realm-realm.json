@@ -529,7 +529,7 @@
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
     "secret" : "FGQtEXJItKGFhGdiQEWV2lcC6hdgNnxT",
-    "redirectUris" : [ "http://localhost:4200/*" ],
+    "redirectUris" : [ "http://localhost:3000/bff/*", "http://localhost:4200/bff/*" ],
     "webOrigins" : [ ],
     "notBefore" : 0,
     "bearerOnly" : false,
