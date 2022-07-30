@@ -18,6 +18,9 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     if (this.ssrrequest) {
+      const baseurl = `${this.ssrrequest.protocol}://${this.ssrrequest.get(
+        'host'
+      )}`;
       const cookieHeadersUnsure = this.ssrrequest.headers['cookie'];
       const cookieHeaders: string[] = Array.isArray(cookieHeadersUnsure)
         ? cookieHeadersUnsure
@@ -27,6 +30,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
       return next.handle(
         request.clone({
+          // TODO: relative URLs are not converted to absolute URLs https://github.com/angular/universal/issues/1826
+          url: `${baseurl}${request.url}`,
           headers: request.headers.set('Cookie', cookieHeaders),
         })
       );
