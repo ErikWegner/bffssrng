@@ -10,3 +10,4 @@
 * Backend implemented as [Express API](https://www.npmjs.com/package/generator-express-no-stress-typescript)
 * Identity provider: [Keycloak](https://keycloak.org)
 
+Open http://localhost:4200/ and login with username `alice` and password `alice`.
