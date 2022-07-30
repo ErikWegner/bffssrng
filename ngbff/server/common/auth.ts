@@ -1,7 +1,7 @@
-import { Issuer, Strategy, TokenSet } from 'openid-client';
-import expressSesssion from 'express-session';
-import passport from 'passport';
 import { Application } from 'express';
+import expressSesssion from 'express-session';
+import { Issuer, Strategy, TokenSet } from 'openid-client';
+import passport from 'passport';
 import l from './logger';
 
 export async function init(app: Application): Promise<void> {
@@ -38,7 +38,10 @@ export async function init(app: Application): Promise<void> {
         done: (err: unknown, user?: unknown) => void
       ) => {
         l.info({ claims: tokenSet.claims() }, 'oidc Strategy');
-        return done(null, tokenSet.claims());
+        return done(null, {
+          ...tokenSet.claims(),
+          id_token: tokenSet.id_token,
+        });
       }
     )
   );
@@ -60,16 +63,21 @@ export async function init(app: Application): Promise<void> {
   });
   app.get('/bff/auth/callback', (req, res, next) => {
     passport.authenticate('oidc', {
-      successRedirect: '/api/v1/me',
+      successRedirect: '/',
       failureRedirect: '/',
     })(req, res, next);
   });
-  app.get('/bff/logout', (_req, res) => {
-    res.redirect(client.endSessionUrl());
+  app.get('/bff/logout', (req, res) => {
+    res.redirect(
+      client.endSessionUrl({
+        id_token_hint: req.user?.id_token,
+        post_logout_redirect_uri: 'http://localhost:3000/bff/logout/callback',
+      })
+    );
   });
   app.get('/bff/logout/callback', (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     req.logout(() => {});
-    res.redirect('/');
+    res.redirect('http://localhost:4200/');
   });
 }
